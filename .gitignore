@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+FE/node_modules/
+BEShop/node_modules/
+
+# Production builds
+FE/dist/
+
+# Environment variables
+.env
+FE/.env
+BEShop/.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / System files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

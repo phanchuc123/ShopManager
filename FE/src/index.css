@@ -1,0 +1,10 @@
+/* Global reset and header offset */
+*{
+	box-sizing: border-box;
+}
+body{
+	margin: 0;
+	padding-top: 60px; /* offset for fixed header height */
+	font-family: Arial, Helvetica, sans-serif;
+}
+

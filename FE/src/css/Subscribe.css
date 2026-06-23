@@ -1,0 +1,245 @@
+.container_sub{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 40px 5%;
+    gap: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-height: 400px;
+}
+
+.sub_name{
+    flex: 1;
+    min-width: 250px;
+}
+
+.sub_name span{
+    font-size: 1.7em;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.container_sub p{
+    color: rgb(161, 161, 161);
+    margin: 5px 0;
+}
+
+.sub_service{
+    flex: 1;
+    display: flex;
+    gap: 80px;
+    min-width: 250px;
+}
+
+.sub_service-link,
+.sub_service-help{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.sub_service-link p,
+.sub_service-help p{
+    font-weight: bold;
+    color: #9c9c9c;
+    margin-bottom: 5px;
+}
+
+.link{
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
+    transition: color 0.3s;
+    line-height: 1.5;
+    display: inline;
+}
+
+.link:hover{
+    color: #c69728;
+}
+
+.sub_input{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 250px;
+}
+
+.sub_input > p{
+    font-weight: bold;
+    color: #9c9c9c;
+}
+
+.sub_input-on{
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.sub_input-on input{
+    flex: 1;
+    padding: 10px 5px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    background: transparent;
+    font-size: 0.9em;
+}
+
+.sub_input-on input::placeholder{
+    color: rgb(161, 161, 161);
+}
+
+.sub_input-on button{
+    padding: 10px 20px;
+    border: none;
+    border-bottom: 1px solid black;
+    background: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.sub_input-on button:hover{
+    color: #c69728;
+    border-bottom-color: #c69728;
+    cursor: pointer;
+}
+
+/* Tablet */
+@media (max-width: 1023px) {
+    .container_sub{
+        padding: 35px 4%;
+        gap: 35px;
+    }
+    
+    .sub_name,
+    .sub_service,
+    .sub_input{
+        min-width: 200px;
+    }
+    
+    .sub_service{
+        gap: 50px;
+    }
+}
+
+/* Mobile Landscape / Small Tablet */
+@media (max-width: 850px) {
+    .container_sub{
+        gap: 30px;
+    }
+    
+    .sub_name{
+        flex: 1 1 100%;
+        text-align: center;
+    }
+    
+    .sub_service{
+        flex: 1 1 45%;
+        justify-content: center;
+    }
+    
+    .sub_input{
+        flex: 1 1 45%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .container_sub{
+        flex-direction: column;
+        padding: 30px 5%;
+        gap: 35px;
+        align-items: center;
+    }
+    
+    .sub_name{
+        width: 100%;
+        text-align: center;
+        min-width: 100%;
+    }
+    
+    .sub_name span{
+        font-size: 1.5em;
+    }
+    
+    .sub_service{
+        width: 100%;
+        justify-content: space-around;
+        gap: 40px;
+        min-width: 100%;
+    }
+    
+    .sub_service-link,
+    .sub_service-help{
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .sub_input{
+        width: 100%;
+        min-width: 100%;
+        align-items: center;
+    }
+    
+    .sub_input-on{
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+    .container_sub{
+        padding: 25px 4%;
+        gap: 30px;
+    }
+    
+    .sub_name span{
+        font-size: 1.4em;
+    }
+    
+    .container_sub p{
+        font-size: 0.9em;
+    }
+    
+    .sub_service{
+        flex-direction: row;
+        gap: 25px;
+        align-items: center;
+    }
+    
+    .sub_service-link,
+    .sub_service-help{
+        width: 100%;
+        gap: 15px;
+    }
+    
+    .link{
+        font-size: 0.85em;
+    }
+    
+    .sub_input-on{
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+    
+    .sub_input-on input,
+    .sub_input-on button{
+        width: 100%;
+    }
+    
+    .sub_input-on button{
+        padding: 12px 20px;
+    }
+}

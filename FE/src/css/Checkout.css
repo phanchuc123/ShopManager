@@ -1,0 +1,84 @@
+.section-Checkout {
+  width: 100%;
+  min-height: 100vh;
+}
+.container-checkout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: space-around;
+}
+.billing-details{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.billing-details label{
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color: #000;
+    gap:8px;
+}
+.billing-details input{
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: 1px solid #d4d4d4;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+.billing-details input:focus {
+    outline: none;
+    border-color: #B88E2F;
+}
+.total-details{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.total-details span{
+    font-size: 16px;
+    color: #000;
+}
+.fr-btn{
+    display: flex;
+    gap:20px;
+}
+.total-details button{
+    padding:5px;
+    border-radius: 8px;
+    border: 1px solid #6b6969;
+    cursor: pointer;
+    padding: 7px 20px;
+}
+.total-details button:focus {
+    background-color: #B88E2F;
+    color: #fff;
+    border: none;
+}
+.option-payment{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.info-bank{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: #000;
+}
+.info-bank span{
+    font-weight: bold;
+    color: #000;
+    
+}
+@media (max-width: 767px){
+    .container-checkout{
+        flex-direction: column;
+        padding: 20px 10px;
+        gap: 30px;
+    }
+}

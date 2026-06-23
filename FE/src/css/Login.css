@@ -1,0 +1,90 @@
+.login_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.form_login {
+  background: #fff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 360px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-in-out;
+  z-index: 1;
+}
+
+.form_login h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.form_login input {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  margin: 12px 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.form_login input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+  outline: none;
+}
+
+.form_login button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form_login button:hover {
+  background-color: #357ABD;
+}
+
+.form_login p {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form_login a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.form_login a:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
