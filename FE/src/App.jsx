@@ -14,7 +14,7 @@ function App() {
  
 
   return (
-    <BrowserRouter basename="/ShopManager">
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Header/>
       <Routes>
         <Route path="/" element = {<Home/>}/>
