@@ -1,5 +1,7 @@
+console.log(">> BACKEND STARTUP: server.js is starting...");
 const express = require('express');
 const app = express();
+
 const configViewEngine = require('./config/viewconfig');
 const ProductRoutes = require('./routes/product.route');
 const UserRoutes = require('./routes/user.route');
@@ -18,6 +20,7 @@ app.use('/api/cart', CartRoutes);
 app.use('/api/orders',OrderRoutes);
 app.use('/api/feelback',FeelBackRoutes);
 const PORT = process.env.PORT || 3001;
+console.log(`>> BACKEND STARTUP: Attempting to listen on port ${PORT}...`);
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`>> BACKEND STARTUP: Server is successfully running and listening on port ${PORT}`);
 });

@@ -1,6 +1,8 @@
+console.log(">> DATABASE CONFIG: database.js is loading...");
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+console.log(">> DATABASE CONFIG: Creating mysql connection pool...");
 const connection = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -12,5 +14,6 @@ const connection = mysql.createPool({
     queueLimit: 0,
     ssl: process.env.DB_HOST && process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : undefined
 });
+console.log(">> DATABASE CONFIG: Connection pool created successfully.");
 
 module.exports = connection;
