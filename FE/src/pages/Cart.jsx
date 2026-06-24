@@ -91,8 +91,23 @@ export default function Cart() {
               <tbody>
                 {cartItems.map((item) => (
                   <tr key={item.item_id}>
-                    <td data-label="Product">
-                      <span>{item.ProName}</span>
+                    <td data-label="Product" className="cart_product_cell">
+                      {item.ProPic && (
+                        <img src={item.ProPic} alt={item.ProName} className="cart_product_img" />
+                      )}
+                      <div className="cart_product_info">
+                        <span className="cart_product_name">{item.ProName}</span>
+                        <div className="cart_product_options">
+                          {item.size && (
+                            <span className="cart_product_size">Size: {item.size}</span>
+                          )}
+                          {item.color && (
+                            <span className="cart_product_color">
+                              Color: <span className="color_dot_preview" style={{ backgroundColor: item.color }} title={item.color}></span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </td>
                     <td data-label="Price">
                       {parseFloat(item.price).toLocaleString()}đ

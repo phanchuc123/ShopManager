@@ -44,41 +44,63 @@ export default function ProductDetail() {
     setQuantity(quantity + 1);
   };
   const handleAddToCart = async() => {
+    if (product.sizes && product.sizes.trim().length > 0 && !selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+    if (product.colors && product.colors.trim().length > 0 && !selectedColor) {
+      alert("Please select a color.");
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) {
-    alert("Please login to add to cart.");
-    window.location.href = "/ShopManager/login";
-    return;
-  }
+    if (!user) {
+      alert("Please login to add to cart.");
+      window.location.href = "/ShopManager/login";
+      return;
+    }
 
-  const cartItem = {
-    user_id: user.id,
-    product_id: product.id,
-    quantity: quantity,
-    price: Number(product.cost),
-    size: selectedSize,
-    color: selectedColor
-  };
+    const cartItem = {
+      user_id: user.id,
+      product_id: product.id,
+      quantity: quantity,
+      price: Number(product.cost),
+      size: selectedSize,
+      color: selectedColor
+    };
 
-  try {
-    console.log("user:", user);
-    console.log("product:", product);
-    const res = await fetch(`${API_BASE_URL}/api/cart/add`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cartItem)
-    });
-    const data = await res.json();
-    alert(data.message);
-  } catch (err) {
-    console.error("Error adding to cart:", err);
-    alert("Error connecting to server.");
-  }
+    try {
+      console.log("user:", user);
+      console.log("product:", product);
+      const res = await fetch(`${API_BASE_URL}/api/cart/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cartItem)
+      });
+      const data = await res.json();
+      alert(data.message);
+      if (data.success) {
+        window.dispatchEvent(new Event('cartUpdated'));
+      }
+    } catch (err) {
+      console.error("Error adding to cart:", err);
+      alert("Error connecting to server.");
+    }
   };
   const handleBuyNow = () =>{
+    if (product.sizes && product.sizes.trim().length > 0 && !selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+    if (product.colors && product.colors.trim().length > 0 && !selectedColor) {
+      alert("Please select a color.");
+      return;
+    }
+
     const user = JSON.parse(localStorage.getItem("user"));
     if(!user){
       alert("Please login to proceed with purchase.");
+      return;
     }
     const total = Number(product.cost) * quantity
     navigate("/checkout",{

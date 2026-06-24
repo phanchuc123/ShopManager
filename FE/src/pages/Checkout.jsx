@@ -1,8 +1,8 @@
 import Panel from "../components/Panel";
 import imgCheckout from "../img/Shop.png";
 import "../css/Checkout.css";
-import { useState } from "react";
-import { Link ,useLocation} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Subscribe from "../components/Subscribe.jsx";
 import API_BASE_URL from "../utils/api";
 
@@ -12,6 +12,7 @@ export default function Checkout(){
     const [loading,setLoading] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState("");
     const { type = "cart" ,total = 0, quantity = 0, items = [] } = useLocation().state || {};
+    
     const [form,setForm] = useState({
         first_name:"",
         last_name:"",
@@ -21,22 +22,84 @@ export default function Checkout(){
         phone:"",
         email:"" 
     });
+
+    // Pre-fill email and phone number if user is logged in
+    useEffect(() => {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            setForm(prev => ({
+                ...prev,
+                email: user.email || "",
+                phone: user.phone || ""
+            }));
+        }
+    }, []);
+
     const handleChange = e =>{
         setForm({...form,[e.target.name]:e.target.value})
     };
+
     const handlePlaceOrder = async () =>{
         setError("");
         setSuccess("");
-        if(!selectedPayment){
-            setError("Please choose payment method");
-            return;
-        }
+        
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log("USER:", user.id);
         if(!user){
-            setError("Please login to place order");
+            setError("Vui lòng đăng nhập để đặt hàng");
             return;
         }
+
+        // Validate form fields
+        if (!form.first_name.trim()) {
+            setError("Vui lòng điền First Name");
+            return;
+        }
+        if (!form.last_name.trim()) {
+            setError("Vui lòng điền Last Name");
+            return;
+        }
+        if (!form.address.trim()) {
+            setError("Vui lòng điền Street address");
+            return;
+        }
+        if (!form.city.trim()) {
+            setError("Vui lòng điền Town/City");
+            return;
+        }
+        if (!form.province.trim()) {
+            setError("Vui lòng điền Province");
+            return;
+        }
+        if (!form.phone.trim()) {
+            setError("Vui lòng điền Phone");
+            return;
+        }
+        
+        // Basic phone number validation (must be 10 or 11 digits)
+        const phoneRegex = /^[0-9]{10,11}$/;
+        if (!phoneRegex.test(form.phone.trim())) {
+            setError("Số điện thoại không hợp lệ (phải gồm 10 hoặc 11 chữ số)");
+            return;
+        }
+
+        if (!form.email.trim()) {
+            setError("Vui lòng điền Email address");
+            return;
+        }
+
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(form.email.trim())) {
+            setError("Email không đúng định dạng");
+            return;
+        }
+
+        if(!selectedPayment){
+            setError("Vui lòng chọn phương thức thanh toán");
+            return;
+        }
+
         setLoading(true);
         const body = {
             type,
@@ -47,35 +110,44 @@ export default function Checkout(){
             payment_method: selectedPayment,
             ...form
         };
+        
         try{
-        const res = await fetch(`${API_BASE_URL}/api/orders/order`,{
-            method:"POST",
-            headers: { "Content-Type": "application/json" },
-            body:JSON.stringify(body)
-        });
-        const data = await res.json();
-        if(!data.success){
-           setError("Đặt hàng thất bại");
-        }else{
-           setSuccess("Đặt hàng thành công")
-        }
+            const res = await fetch(`${API_BASE_URL}/api/orders/order`,{
+                method:"POST",
+                headers: { "Content-Type": "application/json" },
+                body:JSON.stringify(body)
+            });
+            const data = await res.json();
+            if(!data.success){
+               setError("Đặt hàng thất bại: " + (data.message || ""));
+            }else{
+               setSuccess("Đặt hàng thành công!");
+               // Clear cart count on layout
+               if (type === "cart") {
+                   window.dispatchEvent(new Event('cartUpdated'));
+               }
+            }
         }catch(err){
-            alert("Server error",err.message);
+            setError("Lỗi kết nối server!");
+            console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
+
     return(
         <section className="section_Checkout">
             <Panel namelink="Checkout" imglink = {imgCheckout}/>
             <div className="container-checkout">
                 <div className="billing-details">
                     <h2>Billing Details</h2>
-                    <label>First Name<input name ="first_name" onChange={handleChange} type="text" /></label>
-                    <label>Last Name<input name ="last_name" onChange={handleChange} type="text" /></label>
-                    <label>Street address<input name ="address" onChange={handleChange} type="text" /></label>
-                    <label>Town/City<input name = "city" onChange={handleChange} type="text" /></label>
-                    <label>Province<input name = "province" onChange={handleChange} type="text" /></label>
-                    <label>Phone<input name = "phone" onChange={handleChange} type="text" /></label>
-                    <label>Email address<input name = "email" onChange={handleChange} type="email" /></label>
+                    <label>First Name<input name ="first_name" value={form.first_name} onChange={handleChange} type="text" /></label>
+                    <label>Last Name<input name ="last_name" value={form.last_name} onChange={handleChange} type="text" /></label>
+                    <label>Street address<input name ="address" value={form.address} onChange={handleChange} type="text" /></label>
+                    <label>Town/City<input name = "city" value={form.city} onChange={handleChange} type="text" /></label>
+                    <label>Province<input name = "province" value={form.province} onChange={handleChange} type="text" /></label>
+                    <label>Phone<input name = "phone" value={form.phone} onChange={handleChange} type="text" /></label>
+                    <label>Email address<input name = "email" value={form.email} onChange={handleChange} type="email" /></label>
                 </div>
                 <div className="total-details">
                     <h2>Your Order</h2>
@@ -111,14 +183,12 @@ export default function Checkout(){
                             {loading ? "Placing Order" : "Place Order" }
                         </button>
                         <Link to ="/cart" disabled={loading}>
-                            <button>Info Cart Items</button>
+                            <button type="button">Info Cart Items</button>
                         </Link>
                     </div>
                 </div>
             </div>
             <Subscribe/>
         </section>
-            
-        
     );
 }

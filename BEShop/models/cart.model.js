@@ -1,4 +1,5 @@
 const connection = require('../config/database');
+const BASE_URL = (process.env.APP_URL || 'http://localhost:3001') + '/public/';
 
 const getOrCreateCart = async (user_id) =>{
     const [results,fields] = await connection.query("SELECT * FROM cart where user_id = ?",[user_id]);
@@ -32,7 +33,10 @@ const get_cart_by_user = async(user_id) =>{
 }
 const get_item_by_cart = async(cart_id) =>{
     const[itemResults, itemFields] = await connection.query("SELECT ci.*, p.ProName, p.ProPic, p.ProDes FROM cart_items ci JOIN product p ON ci.product_id = p.id WHERE ci.cart_id = ?", [cart_id]);
-    return itemResults;
+    return itemResults.map(item => ({
+        ...item,
+        ProPic: BASE_URL + item.ProPic
+    }));
 };
 const deleteItem = async(item_id) =>{
     const [results, fields] = await connection.query("DELETE FROM cart_items WHERE item_id = ?", [item_id]);
