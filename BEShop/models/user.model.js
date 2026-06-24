@@ -23,8 +23,14 @@ const process_login = async (email,password) =>{
     const isPasswordValid = await bcrypt.compare(password, user.password);
     return isPasswordValid ? user : null;
 }
+const getUserByEmail = async (email) => {
+    const [results, fields] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+    return results.length > 0 ? results[0] : null;
+}
+
 module.exports = {
     process_register,
     is_register,
-    process_login
+    process_login,
+    getUserByEmail
 }

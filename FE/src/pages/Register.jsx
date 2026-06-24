@@ -3,44 +3,73 @@ import API_BASE_URL from "../utils/api";
 import { Link } from "react-router-dom";
 import "../css/Register.css";
 import panel from "../img/nenHome.png";
+import { auth } from "../utils/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Register() {
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = new FormData(e.target);
+    const formData = new FormData(e.target);
 
-  const user = {
-    username: formData.get("username"),
-    email: formData.get("email"),
-    phone: formData.get("phone"),
-    password: formData.get("password"),
-    confirmPassword: formData.get("confirmPassword"),
+    const user = {
+      username: formData.get("username"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      password: formData.get("password"),
+      confirmPassword: formData.get("confirmPassword"),
+    };
+
+    if (user.password !== user.confirmPassword) {
+      setMessage("Password không khớp");
+      return;
+    }
+
+    let firebaseUser = null;
+    try {
+      // 1. Register with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        user.email,
+        user.password
+      );
+      firebaseUser = userCredential.user;
+
+      // 2. Sync with MySQL Database
+      const res = await fetch(`${API_BASE_URL}/api/user/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user),
+      });
+
+      const data = await res.json();
+      
+      if (data && data.message === "Đăng ký thành công") {
+        setMessage("Đăng ký thành công!");
+      } else {
+        // Rollback Firebase user if MySQL creation fails (e.g. username already exists)
+        if (firebaseUser) {
+          await firebaseUser.delete();
+        }
+        setMessage(typeof data === "string" ? data : "Đăng ký thất bại");
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.code === "auth/email-already-in-use") {
+        setMessage("Email này đã được đăng ký trên hệ thống.");
+      } else if (err.code === "auth/weak-password") {
+        setMessage("Mật khẩu quá yếu (tối thiểu 6 ký tự).");
+      } else if (err.code === "auth/invalid-email") {
+        setMessage("Email không hợp lệ.");
+      } else {
+        setMessage(err.message || "Lỗi đăng ký!");
+      }
+    }
   };
-
-  if (user.password !== user.confirmPassword) {
-    setMessage("Password không khớp");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/user/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user),
-    });
-
-    const data = await res.json();
-    setMessage(data.message);
-  } catch (err) {
-    console.error(err);
-    setMessage("Lỗi kết nối server!");
-  }
-};
 
 
   return (

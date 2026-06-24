@@ -88,3 +88,63 @@
     transform: translateY(0);
   }
 }
+
+.login_divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #888;
+  font-size: 14px;
+}
+
+.login_divider::before,
+.login_divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.login_divider:not(:empty)::before {
+  margin-right: 10px;
+}
+
+.login_divider:not(:empty)::after {
+  margin-left: 10px;
+}
+
+.btn_google_login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 0px !important;
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border: 1px solid #dadce0 !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.btn_google_login:hover {
+  background-color: #f8f9fa !important;
+  border-color: #d2d4d7 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+.google_icon {
+  width: 18px;
+  height: 18px;
+}
+
+.login_message {
+  margin-top: 15px !important;
+  color: #e23e3e !important;
+  font-size: 14px;
+}
