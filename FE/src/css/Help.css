@@ -1,0 +1,145 @@
+.section-help {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.help-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  display: flex;
+  gap: 40px;
+}
+
+.help-tabs {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-right: 1px solid #eaeaea;
+  padding-right: 25px;
+}
+
+.help-tab-btn {
+  text-align: left;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  background-color: #fcfcfc;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.help-tab-btn:hover {
+  color: #B88E2F;
+  border-color: #B88E2F;
+  background-color: #fff9f0;
+}
+
+.help-tab-btn.active {
+  color: #fff;
+  background-color: #B88E2F;
+  border-color: #B88E2F;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(184, 142, 47, 0.2);
+}
+
+.help-content {
+  flex: 1;
+  background: #fff;
+  padding: 10px 10px 30px 10px;
+}
+
+.help-section-content h3 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.help-intro {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.payment-method-card, .help-policy-block {
+  background-color: #fbfbfb;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s ease;
+}
+
+.payment-method-card:hover, .help-policy-block:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+}
+
+.payment-method-card h4, .help-policy-block h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.payment-method-card p, .help-policy-block p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+.bank-details-box {
+  margin-top: 15px;
+  background-color: #fffcf7;
+  border: 1px dashed #e0d0b0;
+  padding: 15px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bank-details-box p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.help-section-content ul, .help-section-content ol {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.help-section-content li {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .help-container {
+    flex-direction: column;
+    padding: 30px 15px;
+    gap: 20px;
+  }
+  
+  .help-tabs {
+    flex: none;
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 20px;
+  }
+}

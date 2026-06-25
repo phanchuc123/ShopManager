@@ -8,6 +8,7 @@ const UserRoutes = require('./routes/user.route');
 const CartRoutes = require('./routes/cart.route');
 const OrderRoutes = require('./routes/order.route');
 const FeelBackRoutes = require('./routes/feedback.route');
+const AdminRoutes = require('./routes/admin.route');
 const cors = require('cors');
 configViewEngine(app);  
 app.use(cors());
@@ -19,6 +20,7 @@ app.use('/api/user', UserRoutes);
 app.use('/api/cart', CartRoutes);
 app.use('/api/orders',OrderRoutes);
 app.use('/api/feelback',FeelBackRoutes);
+app.use('/api/admin', AdminRoutes);
 const PORT = process.env.PORT || 3001;
 console.log(`>> BACKEND STARTUP: Attempting to listen on port ${PORT}...`);
 app.listen(PORT, () => {

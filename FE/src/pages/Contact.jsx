@@ -3,11 +3,19 @@ import Panel from "../components/Panel.jsx";
 import imgContact from "../img/Shop.png";
 import "../css/Contact.css";
 import Subscribe from "../components/Subscribe.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import API_BASE_URL from "../utils/api";
 
 export default function Contact() {
   const[success,setSuccess] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   const handleSend = async (e) =>{
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -37,15 +45,14 @@ export default function Contact() {
   }
   return (
     <section className="section_Contact">
-      <Panel namelink="Contact" imglink={imgContact} />
+      <Panel namelink="Liên hệ" imglink={imgContact} />
 
       <div className="contact_info">
         <div className="frame_info1">
-          <h2>Get In Touch With Us</h2>
+          <h2>Liên hệ với chúng tôi</h2>
           <pre>
-            For More Information About Our Product & Services, Please Feel Free
-            To Drop Us An Email. Our Staff Will Always Be There To Help You Out.
-            Do Not Hesitate!
+            Để biết thêm thông tin chi tiết về sản phẩm & dịch vụ, xin vui lòng gửi thư cho chúng tôi. 
+            Đội ngũ nhân viên luôn sẵn sàng giải đáp và hỗ trợ bạn sớm nhất có thể. Đừng ngần ngại!
           </pre>
         </div>
 
@@ -54,16 +61,16 @@ export default function Contact() {
             <span className="detail_item">
               <FaMapMarkerAlt className="icon" />
               <div>
-                <h5>Address</h5>
-                <p>48 Ngo Si Lien, Da Nang, Viet Nam</p>
+                <h5>Địa chỉ</h5>
+                <p>48 Ngô Sĩ Liên, Liên Chiểu, Đà Nẵng, Việt Nam</p>
               </div>
             </span>
 
             <span className="detail_item">
               <FaPhoneAlt className="icon" />
               <div>
-                <h5>Phone</h5>
-                <p>Mobile: +(84) 546-6789</p>
+                <h5>Điện thoại</h5>
+                <p>Di động: +(84) 546-6789</p>
                 <p>Hotline: +(84) 456-6789</p>
               </div>
             </span>
@@ -71,34 +78,53 @@ export default function Contact() {
             <span className="detail_item">
               <FaClock className="icon" />
               <div>
-                <h5>Working Time</h5>
-                <p>Monday–Friday: 9:00 – 22:00</p>
-                <p>Saturday–Sunday: 9:00 – 21:00</p>
+                <h5>Thời gian làm việc</h5>
+                <p>Thứ Hai – Thứ Sáu: 9:00 – 22:00</p>
+                <p>Thứ Bảy – Chủ Nhật: 9:00 – 21:00</p>
               </div>
             </span>
           </div>
 
           <div className="info2_input">
             <form onSubmit={handleSend}>
+              {user && (
+                <div style={{ fontSize: '14px', color: '#B88E2F', marginBottom: '15px', backgroundColor: '#fcf8f3', padding: '10px', borderRadius: '6px', border: '1px solid #f0e6d2' }}>
+                  Gửi phản hồi với tài khoản: <strong>{user.username} ({user.email})</strong>
+                </div>
+              )}
               <label>
-                Your name
-                <input type="text" name = "your_name" placeholder="Your name" required />
+                Họ và tên
+                <input 
+                  type="text" 
+                  name="your_name" 
+                  placeholder="Nhập tên của bạn" 
+                  defaultValue={user ? user.username : ""} 
+                  key={user ? user.username : "empty-name"}
+                  required 
+                />
               </label>
               <label>
-                Email address
-                <input type="email" name="your_email" placeholder="abc@gmail.com" required/>
+                Địa chỉ Email
+                <input 
+                  type="email" 
+                  name="your_email" 
+                  placeholder="abc@gmail.com" 
+                  defaultValue={user ? user.email : ""} 
+                  key={user ? user.email : "empty-email"}
+                  required
+                />
               </label>
               <label>
-                Subject
-                <input type="text" name="your_optional" placeholder="This is an optional" required/>
+                Tiêu đề
+                <input type="text" name="your_optional" placeholder="Nhập tiêu đề phản hồi (tùy chọn)" required/>
               </label>
               <label>
-                Message
-                <textarea name="your_msg" placeholder="Hi! I'd like to ask about..."required></textarea>
+                Lời nhắn
+                <textarea name="your_msg" placeholder="Xin chào! Tôi muốn hỏi về..." required></textarea>
               </label>
-              <button type="submit">Submit</button>
+              <button type="submit">Gửi yêu cầu</button>
             </form>
-            {success && <p className="success">Da gui thanh cong</p>}
+            {success && <p className="success">{success}</p>}
           </div>
         </div>
       </div>

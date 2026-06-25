@@ -10,24 +10,24 @@ export default function Subscribe(){
             </div>
             <div className="sub_service">
                 <nav className="sub_service-link">
-                    <p>Link</p>
-                    <Link to = "/"className="link">Home</Link>
-                    <Link to = "/shop"className="link">Shop</Link>
-                    <Link to = "/about"className="link">About</Link>
-                    <Link to = "/contact"className="link">Contact</Link>
+                    <p>Liên kết</p>
+                    <Link to="/" className="link">Trang chủ</Link>
+                    <Link to="/shop" className="link">Cửa hàng</Link>
+                    <Link to="/about" className="link">Giới thiệu</Link>
+                    <Link to="/contact" className="link">Liên hệ</Link>
                 </nav>
                 <nav className="sub_service-help">
-                    <p>Help</p>
-                    <Link className="link">Payments</Link>
-                    <Link className="link">Returns</Link>
-                    <Link className="link">Policies</Link>
+                    <p>Hỗ trợ</p>
+                    <Link to="/help?tab=payments" className="link">Thanh toán</Link>
+                    <Link to="/help?tab=returns" className="link">Đổi trả hàng</Link>
+                    <Link to="/help?tab=policies" className="link">Chính sách bảo mật</Link>
                 </nav>
             </div>
             <div className="sub_input">
-                <p>Newletter</p>
+                <p>Đăng ký nhận tin</p>
                 <div className="sub_input-on">
-                    <input type="text" name="" id="" placeholder='Enter your Email or Phone'/>
-                    <button>Subscribe</button>
+                    <input type="text" name="" id="" placeholder='Nhập Email hoặc Số điện thoại'/>
+                    <button>Đăng ký</button>
                 </div>
             </div>
         </div>

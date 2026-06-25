@@ -10,7 +10,7 @@ export default function Panel({ namelink, imglink }) {
         </div>
         <h1>{namelink}</h1>
         <div className="panel_transition">
-          <p><Link className="linkHome" to="/">Home {" > "}</Link>{namelink}</p>
+          <p><Link className="linkHome" to="/">Trang Chủ {" > "}</Link>{namelink}</p>
         </div>
       </div>
     </div>

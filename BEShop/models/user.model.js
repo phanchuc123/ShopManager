@@ -28,9 +28,27 @@ const getUserByEmail = async (email) => {
     return results.length > 0 ? results[0] : null;
 }
 
+const getUserById = async (id) => {
+    const [results, fields] = await connection.query('SELECT * FROM users WHERE id = ?', [id]);
+    return results.length > 0 ? results[0] : null;
+}
+
+const updateUserProfile = async (id, username, phone) => {
+    const [results] = await connection.query('UPDATE users SET username = ?, phone = ? WHERE id = ?', [username, phone, id]);
+    return results.affectedRows > 0;
+}
+
+const updateUserPassword = async (id, hashedPassword) => {
+    const [results] = await connection.query('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+    return results.affectedRows > 0;
+}
+
 module.exports = {
     process_register,
     is_register,
     process_login,
-    getUserByEmail
+    getUserByEmail,
+    getUserById,
+    updateUserProfile,
+    updateUserPassword
 }

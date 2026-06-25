@@ -31,7 +31,7 @@ export default function Login(){
             const data = await res.json();
             if(data.success){
                 localStorage.setItem("user", JSON.stringify(data.user));
-                window.location.href = "/";
+                window.location.href = import.meta.env.BASE_URL;
             }
             else{
                 setMessage(data.message);
@@ -71,7 +71,7 @@ export default function Login(){
             const data = await res.json();
             if(data.success){
                 localStorage.setItem("user", JSON.stringify(data.user));
-                window.location.href = "/";
+                window.location.href = import.meta.env.BASE_URL;
             }
             else{
                 setMessage(data.message);

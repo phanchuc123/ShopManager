@@ -10,6 +10,9 @@ import Register from './pages/Register';
 import Cart from './pages/Cart';
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import Help from './pages/Help';
+import Admin from './pages/Admin';
 function App() {
  
 
@@ -26,6 +29,9 @@ function App() {
         <Route path="/register" element = {<Register/>}/>
         <Route path="/cart" element = {<Cart/>}/>
         <Route path="/checkout" element = {<Checkout/>}/>
+        <Route path="/profile" element = {<Profile/>}/>
+        <Route path="/help" element = {<Help/>}/>
+        <Route path="/admin" element = {<Admin/>}/>
       </Routes>
     </BrowserRouter>
   )

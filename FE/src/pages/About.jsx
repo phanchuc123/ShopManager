@@ -6,20 +6,21 @@ import "../css/About.css";
 export default function About(){
     return(
         <>
-        <Panel namelink="About" imglink={imgAbout} />
+        <Panel namelink="Giới thiệu" imglink={imgAbout} />
         <section className="section_about">
             <div className="container-intro">
                 <div className="header-intro">
-                    <h2>Who We Are</h2>
-                    <p>Furniro, named from Furniture Innovation, was founded in the United States in 2010 by a couple of young entrepreneurs as a joint venture to the 30-years experienced manufacturer in Malaysia. Furinno introduces a new trend of RTA (Ready-To-Assemble) furniture to the market with the concept to fit in your space, your style, and fit on your budget.
-                       Through direct investment by the manufacturer, Furinno is able to involve vertically in the process of product research and development, quality control, operation, supply chain, and customer services. Our designers and engineers set their sights on creating better designs at the lowest cost with the quality that sustains the period of use. 
-                       Engineered with 90% recycled Malaysian rubberwood, Furinno is committed to making home furnishing easy affordable, and unique while remaining sustainable in the process. Whether you’re in your first apartment or looking for a budget-friendly way to create the space you want, Furinno is always your practical choice for a wide selection and easy to assemble furniture.
+                    <h2>Chúng tôi là ai</h2>
+                    <p>Furniro, được đặt tên từ Furniture Innovation (Sự đổi mới về nội thất), được thành lập tại Hoa Kỳ vào năm 2010 bởi một nhóm doanh nhân trẻ dưới hình thức liên doanh với nhà sản xuất có 30 năm kinh nghiệm tại Malaysia. Furniro giới thiệu xu hướng nội thất RTA (Ready-To-Assemble - Tự lắp ráp) mới ra thị trường với triết lý: phù hợp với không gian, phong cách và ngân sách của bạn.
+                       Thông qua đầu tư trực tiếp từ nhà sản xuất, Furniro có thể tham gia sâu vào quy trình nghiên cứu và phát triển sản phẩm, kiểm soát chất lượng, vận hành, chuỗi cung ứng và chăm sóc khách hàng. Đội ngũ thiết kế và kỹ sư của chúng tôi luôn hướng tới việc tạo ra những sản phẩm thiết kế đẹp hơn với chi phí thấp nhất cùng chất lượng bền bỉ theo thời gian.
+                       Được chế tạo từ 90% gỗ cao su tái chế của Malaysia, Furniro cam kết mang lại đồ nội thất gia đình tiện lợi, giá cả phải chăng, độc đáo và bền vững. Cho dù bạn đang ở căn hộ đầu tiên hay tìm kiếm giải pháp tiết kiệm để trang trí không gian sống mơ ước, Furniro luôn là lựa chọn thiết thực với danh mục sản phẩm đa dạng và dễ dàng lắp ráp.
                     </p>
                 </div>
                 <div className="ship-intro">
-                    <h2>Where do we ship ?</h2>
+                    <h2>Phạm vi giao hàng</h2>
                     <ul>
-                        <li>United States</li>
+                        <li>Việt Nam</li>
+                        <li>Hoa Kỳ</li>
                         <li>Canada</li>
                         <li>Mexico</li>
                     </ul>
@@ -30,28 +31,28 @@ export default function About(){
             </div> 
             <div className="mission-intro">
                 <h2>Furniro</h2>
-                <p>At Furniro, we make home furnishing accessible to everyone. With practical designs, easy assembly, and affordable prices, we bring intentional pieces directly to your door—helping you create a functional and beautiful home.</p>
+                <p>Tại Furniro, chúng tôi mong muốn mang đồ nội thất gia đình đến gần hơn với tất cả mọi người. Bằng các thiết kế thực tiễn, lắp ráp dễ dàng và mức giá hợp lý, chúng tôi trao những sản phẩm tâm huyết trực tiếp tới cửa nhà bạn — giúp bạn kiến tạo một không gian sống tiện nghi và xinh đẹp.</p>
             </div>
             <div className="mission-item-intro">
                 <div className="mission item1">
-                    <h4>Affordable Home Solutions</h4>
-                    <p>Offering the best value and practical solution to furnish your home.</p>
+                    <h4>Giải pháp nội thất tiết kiệm</h4>
+                    <p>Cung cấp giá trị tốt nhất và các giải pháp thực tế để trang hoàng tổ ấm của bạn.</p>
                 </div>
                 <div className="mission item2">
-                    <h4>Multifunctional Designs</h4>
-                    <p>Versatile and flexible designs for every corner of your living space.</p>
+                    <h4>Thiết kế đa chức năng</h4>
+                    <p>Kiểu dáng linh hoạt, đa dụng cho mọi góc nhỏ trong không gian sống của bạn.</p>
                 </div>
                 <div className="mission item3">
-                    <h4>Wide Selection of Products</h4>
-                    <p>More than 1500 products available in various styles and prices.</p>
+                    <h4>Danh mục sản phẩm đa dạng</h4>
+                    <p>Hơn 1500 sản phẩm sẵn có với nhiều phong cách và mức giá khác nhau.</p>
                 </div>
                 <div className="mission item4">
-                    <h4>Customer-Centered</h4>
-                    <p>Building strong relationships by providing excellent services.</p>
+                    <h4>Lấy khách hàng làm trọng tâm</h4>
+                    <p>Xây dựng mối quan hệ bền chặt bằng việc mang lại dịch vụ khách hàng xuất sắc.</p>
                 </div>
             </div>
             <div className="on-intro">
-                <h2>On furniture are available on</h2>
+                <h2>Sản phẩm của chúng tôi hiện có tại</h2>
                 <div className="on-item">
                     <div className="on-img">
                         <img src="https://www.furinno.com/wp-content/uploads/2025/01/Amazon.png" alt="anh" />

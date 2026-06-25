@@ -1,4 +1,5 @@
-const {process_login, is_register,process_register, getUserByEmail} = require('../models/user.model');
+const {process_login, is_register,process_register, getUserByEmail, getUserById, updateUserProfile, updateUserPassword} = require('../models/user.model');
+const bcrypt = require('bcrypt');
 
 const register = async (req, res) => {
     try{
@@ -88,9 +89,65 @@ const googleLogin = async (req, res) => {
         res.json({ success: false, message: "Lỗi server" });
     }
 };
+const updateProfile = async (req, res) => {
+    try {
+        const { id, username, phone, oldPassword, newPassword } = req.body;
+        if (!id) {
+            return res.json({ success: false, message: "Thiếu ID người dùng" });
+        }
+        if (!username) {
+            return res.json({ success: false, message: "Username không được để trống" });
+        }
+
+        // Fetch user from DB to verify status and password
+        const user = await getUserById(id);
+        if (!user) {
+            return res.json({ success: false, message: "Người dùng không tồn tại" });
+        }
+
+        // 1. If password change is requested
+        if (newPassword) {
+            if (!oldPassword) {
+                return res.json({ success: false, message: "Vui lòng nhập mật khẩu hiện tại" });
+            }
+
+            // Verify old password
+            const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+            if (!isPasswordValid) {
+                return res.json({ success: false, message: "Mật khẩu hiện tại không chính xác" });
+            }
+
+            // Hash new password and update
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+            await updateUserPassword(id, hashedNewPassword);
+        }
+
+        // 2. Update profile (username, phone)
+        const updated = await updateUserProfile(id, username, phone || '');
+        if (!updated) {
+            return res.json({ success: false, message: "Cập nhật thông tin thất bại" });
+        }
+
+        // Get the updated user object to return
+        const updatedUser = await getUserById(id);
+        delete updatedUser.password;
+
+        return res.json({
+            success: true,
+            message: "Cập nhật thông tin thành công",
+            user: updatedUser
+        });
+
+    } catch (error) {
+        console.error("Update profile error:", error);
+        return res.json({ success: false, message: "Lỗi server: " + error.message });
+    }
+};
+
 module.exports = {
     register,
     login,
     firebaseLogin,
-    googleLogin
+    googleLogin,
+    updateProfile
 }

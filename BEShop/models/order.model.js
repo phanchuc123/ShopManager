@@ -57,8 +57,15 @@ const buy_now = async (user_id,product_id,quantity,first_name,last_name,address,
         total_quantity: quantity
     }
 }
+
+const getOrdersByUserId = async (user_id) => {
+    const [results] = await connection.query("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC", [user_id]);
+    return results;
+};
+
 module.exports = {
     create_order,
     getOrderDetail,
-    buy_now
+    buy_now,
+    getOrdersByUserId
 }

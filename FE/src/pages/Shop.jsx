@@ -36,7 +36,7 @@ export default function Shop(){
 
     return(
         <section className="section_Shop">
-            <Panel namelink="Shop" imglink = {imgShop}/>
+            <Panel namelink="Cửa hàng" imglink = {imgShop}/>
             <div className="container_search">
                 <label htmlFor="">Search :</label>
                 <form className="input_search" onSubmit={(e)=>e.preventDefault()}>

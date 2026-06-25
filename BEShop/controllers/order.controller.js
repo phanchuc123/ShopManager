@@ -1,4 +1,4 @@
-const {create_order, getOrderDetail,buy_now} = require("../models/order.model");
+const {create_order, getOrderDetail,buy_now, getOrdersByUserId} = require("../models/order.model");
 
 const placeOrder = async (req,res) =>{
     try{
@@ -44,6 +44,27 @@ const orderDetail = async (req,res) =>{
         });
     }
 };
+const getUserOrders = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+        if (!user_id) {
+            return res.json({ success: false, message: "Thiếu ID người dùng" });
+        }
+        const data = await getOrdersByUserId(user_id);
+        return res.json({
+            success: true,
+            data: data
+        });
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
-    placeOrder,orderDetail
+    placeOrder,
+    orderDetail,
+    getUserOrders
 }

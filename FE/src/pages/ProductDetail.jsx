@@ -14,20 +14,101 @@ export default function ProductDetail() {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [activeTab, setActiveTab] = useState("description");
+
+  // Reviews states
+  const [reviewsList, setReviewsList] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // New review form state
+  const [newRating, setNewRating] = useState(5);
+  const [newComment, setNewComment] = useState("");
+  const [submitMessage, setSubmitMessage] = useState({ text: "", type: "" });
+
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.id) {
           setProduct(data);
-          setSelectedSize(data.size ? data.size.split(",")[0] : "");
+          setSelectedSize(data.sizes ? data.sizes.split(",")[0] : "");
           setSelectedColor(
-            data.color ? data.color.split(",")[0] : ""
+            data.colors ? data.colors.split(",")[0] : ""
           );
         }
       })
       .catch((err) => console.error("Lỗi khi tải sản phẩm:", err));
+
+    // Load user
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
+    // Fetch reviews
+    setLoadingReviews(true);
+    fetch(`${API_BASE_URL}/api/products/${id}/reviews`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setReviewsList(data.data);
+        }
+      })
+      .catch((err) => console.error("Lỗi khi tải đánh giá:", err))
+      .finally(() => setLoadingReviews(false));
   }, [id]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    setSubmitMessage({ text: "", type: "" });
+
+    if (!user) {
+      alert("Vui lòng đăng nhập để viết đánh giá");
+      return;
+    }
+
+    if (!newComment.trim()) {
+      setSubmitMessage({ text: "Vui lòng nhập nội dung đánh giá", type: "error" });
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/products/${id}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: user.id,
+          username: user.username,
+          rating: newRating,
+          comment: newComment
+        })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setSubmitMessage({ text: "Gửi đánh giá thành công!", type: "success" });
+        setNewComment("");
+        setNewRating(5);
+        setReviewsList(prev => [data.data, ...prev]);
+
+        // Dynamically update product local state rating & reviews count
+        setProduct(prev => {
+          const newCount = prev.reviews + 1;
+          const newAvg = parseFloat(((parseFloat(prev.rating || 0) * prev.reviews) + newRating) / newCount).toFixed(1);
+          return {
+            ...prev,
+            reviews: newCount,
+            rating: newAvg
+          };
+        });
+      } else {
+        setSubmitMessage({ text: data.message || "Gửi đánh giá thất bại", type: "error" });
+      }
+    } catch (err) {
+      console.error(err);
+      setSubmitMessage({ text: "Lỗi kết nối máy chủ khi gửi đánh giá", type: "error" });
+    }
+  };
   if (!product) {
     return (
       <div style={{padding: '4rem', textAlign: 'center'}}>
@@ -127,9 +208,9 @@ export default function ProductDetail() {
       {/* Breadcrumb */}
       <div className="breadcrumb">
         <div className="breadcrumb-container">
-          <Link to="/" className="breadcrumb-link">Home</Link>
+          <Link to="/" className="breadcrumb-link">Trang chủ</Link>
           <span className="breadcrumb-separator">›</span>
-          <Link to="/shop" className="breadcrumb-link">Shop</Link>
+          <Link to="/shop" className="breadcrumb-link">Cửa hàng</Link>
           <span className="breadcrumb-separator">›</span>
           <span className="breadcrumb-current">{product.ProName}</span>
         </div>
@@ -181,7 +262,7 @@ export default function ProductDetail() {
                   </svg>
                 ))}
               </div>
-              <span className="review-count">{product.reviews} Customer Review{product.reviews !== 1 ? 's' : ''}</span>
+              <span className="review-count">{product.reviews} Đánh giá từ khách hàng</span>
             </div>
 
             {/* Description */}
@@ -192,7 +273,7 @@ export default function ProductDetail() {
             {/* Size Selection */}
             {product.sizes && product.sizes.length > 0 && (
               <div className="size-selection">
-                <span className="selection-label">Size</span>
+                <span className="selection-label">Kích thước</span>
                 <div className="size-options">
                   {product.sizes.split(",").map((size) => (
                     <button
@@ -212,7 +293,7 @@ export default function ProductDetail() {
             {/* Color Selection */}
             {product.colors && product.colors.length > 0 && (
               <div className="color-selection">
-                <span className="selection-label">Color</span>
+                <span className="selection-label">Màu sắc</span>
                 <div className="color-options">
                   {product.colors.split(",").map((color) => (
                     <button
@@ -237,10 +318,10 @@ export default function ProductDetail() {
               </div>
 
               <button className="btn-add-cart" onClick={handleAddToCart}>
-                Add To Cart
+                Thêm vào giỏ hàng
               </button>
 
-              <button className="btn-compare" onClick={handleBuyNow}>Buy Now</button>
+              <button className="btn-compare" onClick={handleBuyNow}>Mua ngay</button>
             </div>
 
             {/* Product Meta */}
@@ -251,17 +332,17 @@ export default function ProductDetail() {
                 <span className="meta-value">{product.sku}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label">Category</span>
+                <span className="meta-label">Danh mục</span>
                 <span className="meta-separator">:</span>
                 <span className="meta-value">{product.nameCate}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label">Tags</span>
+                <span className="meta-label">Thẻ</span>
                 <span className="meta-separator">:</span>
                 <span className="meta-value">{product.tags}</span>
               </div>
               <div className="meta-row">
-                <span className="meta-label">Share</span>
+                <span className="meta-label">Chia sẻ</span>
                 <span className="meta-separator">:</span>
                 <div className="social-links">
                   <button className="social-btn" aria-label="Share on Twitter">
@@ -292,19 +373,19 @@ export default function ProductDetail() {
               onClick={() => setActiveTab('description')}
               className={`tab-btn ${activeTab === 'description' ? 'active' : ''}`}
             >
-              Description
+              Mô tả
             </button>
             <button
               onClick={() => setActiveTab('additional')}
               className={`tab-btn ${activeTab === 'additional' ? 'active' : ''}`}
             >
-              Additional Information
+              Thông tin bổ sung
             </button>
             <button
               onClick={() => setActiveTab('reviews')}
               className={`tab-btn ${activeTab === 'reviews' ? 'active' : ''}`}
             >
-              Reviews [{product.reviews}]
+              Đánh giá [{product.reviews}]
             </button>
           </div>
 
@@ -329,19 +410,19 @@ export default function ProductDetail() {
                       <td style={{padding: '1rem'}}>{product.sku}</td>
                     </tr>
                     <tr style={{borderBottom: '1px solid #E5E5E5'}}>
-                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Category</td>
+                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Danh mục</td>
                       <td style={{padding: '1rem'}}>{product.nameCate}</td>
                     </tr>
                     <tr style={{borderBottom: '1px solid #E5E5E5'}}>
-                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Available Sizes</td>
+                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Kích thước có sẵn</td>
                       <td style={{padding: '1rem'}}>
                         {product.sizes ? product.sizes.split(',').join(', ') : 'N/A'}
                       </td>
                     </tr>
                     <tr style={{borderBottom: '1px solid #E5E5E5'}}>
-                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Colors</td>
+                      <td style={{padding: '1rem', color: '#9F9F9F'}}>Màu sắc</td>
                       <td style={{padding: '1rem'}}>
-                        {product.colors ? product.colors.split(',').length + ' options' : 'N/A'}
+                        {product.colors ? product.colors.split(',').length + ' lựa chọn' : 'N/A'}
                     </td>
                     </tr>
                   </tbody>
@@ -352,28 +433,110 @@ export default function ProductDetail() {
 
             {activeTab === 'reviews' && (
               <div className="tab-content-inner">
-                <div style={{textAlign: 'center', padding: '2rem'}}>
-                  <h3 style={{marginBottom: '0.5rem'}}>Customer Reviews</h3>
-                  <div className="stars" style={{justifyContent: 'center', marginBottom: '1rem'}}>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <svg 
-                        key={star} 
-                        className="star" 
-                        viewBox="0 0 20 20"
-                        style={{
-                          fill: star <= Math.floor(product.rating) ? '#FFC700' : '#E0E0E0'
-                        }}
-                      >
-                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                      </svg>
-                    ))}
+                <div className="reviews-container">
+                  <div className="reviews-summary">
+                    <h4>Đánh giá từ khách hàng</h4>
+                    <div className="stars" style={{justifyContent: 'center', margin: '0.5rem 0'}}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <svg 
+                          key={star} 
+                          className="star" 
+                          viewBox="0 0 20 20"
+                          style={{
+                            fill: star <= Math.floor(product.rating) ? '#FFC700' : '#E0E0E0'
+                          }}
+                        >
+                          <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p style={{color: '#666', margin: 0}}>
+                      {product.rating} trên 5 (Dựa trên {product.reviews} đánh giá)
+                    </p>
                   </div>
-                  <p style={{color: '#666'}}>
-                    Based on {product.reviews} review{product.reviews !== 1 ? 's' : ''}
-                  </p>
-                  <p style={{marginTop: '1rem', color: '#9F9F9F'}}>
-                    Customer reviews will be displayed here.
-                  </p>
+
+                  <div className="reviews-list">
+                    {loadingReviews ? (
+                      <p>Đang tải đánh giá...</p>
+                    ) : reviewsList.length === 0 ? (
+                      <p style={{textAlign: 'center', color: '#999', margin: '2rem 0'}}>Sản phẩm chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
+                    ) : (
+                      reviewsList.map((rev) => (
+                        <div className="review-item" key={rev.review_id}>
+                          <div className="review-meta">
+                            <span className="review-author">{rev.username}</span>
+                            <span className="review-date">{new Date(rev.created_at).toLocaleDateString("vi-VN")}</span>
+                          </div>
+                          <div className="review-rating">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <svg
+                                key={star}
+                                className={`review-rating-star ${star > rev.rating ? 'empty' : ''}`}
+                                viewBox="0 0 20 20"
+                              >
+                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                              </svg>
+                            ))}
+                          </div>
+                          <p className="review-comment">{rev.comment}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Add Review Form */}
+                  <div className="add-review-section">
+                    <h4>Viết đánh giá của bạn</h4>
+                    {user ? (
+                      <form onSubmit={handleSubmitReview} className="review-form">
+                        {submitMessage.text && (
+                          <div className={`profile-alert ${submitMessage.type === 'success' ? 'profile-alert-success' : 'profile-alert-error'}`}>
+                            {submitMessage.text}
+                          </div>
+                        )}
+                        <div className="rating-select-container">
+                          <span className="rating-label">Đánh giá của bạn:</span>
+                          <div className="star-input-list">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                type="button"
+                                key={star}
+                                className="star-input-btn"
+                                onClick={() => setNewRating(star)}
+                              >
+                                <svg
+                                  className="star-input-icon"
+                                  viewBox="0 0 20 20"
+                                  style={{
+                                    fill: star <= newRating ? '#FFC700' : '#E0E0E0'
+                                  }}
+                                >
+                                  <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+                                </svg>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="comment-input-container">
+                          <span className="comment-label">Bình luận:</span>
+                          <textarea
+                            className="comment-textarea"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Nhập nội dung đánh giá của bạn ở đây..."
+                            required
+                          />
+                        </div>
+
+                        <button type="submit" className="btn-submit-review">Gửi đánh giá</button>
+                      </form>
+                    ) : (
+                      <div className="login-to-review-alert">
+                        Bạn cần <Link to="/login" className="login-to-review-link">Đăng nhập</Link> để viết đánh giá cho sản phẩm này.
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
