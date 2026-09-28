@@ -11,7 +11,7 @@ export default function About(){
             <div className="container-intro">
                 <div className="header-intro">
                     <h2>Chúng tôi là ai</h2>
-                    <p>Furniro, được đặt tên từ Furniture Innovation (Sự đổi mới về nội thất), được thành lập tại Hoa Kỳ vào năm 2010 bởi một nhóm doanh nhân trẻ dưới hình thức liên doanh với nhà sản xuất có 30 năm kinh nghiệm tại Malaysia. Furniro giới thiệu xu hướng nội thất RTA (Ready-To-Assemble - Tự lắp ráp) mới ra thị trường với triết lý: phù hợp với không gian, phong cách và ngân sách của bạn.
+                    <p>Furniro, được đặt tên từ BAB Furniture Innovation (Sự đổi mới về nội thất), được thành lập tại Hoa Kỳ vào năm 2010 bởi một nhóm doanh nhân trẻ dưới hình thức liên doanh với nhà sản xuất có 30 năm kinh nghiệm tại Malaysia. Furniro giới thiệu xu hướng nội thất RTA (Ready-To-Assemble - Tự lắp ráp) mới ra thị trường với triết lý: phù hợp với không gian, phong cách và ngân sách của bạn.
                        Thông qua đầu tư trực tiếp từ nhà sản xuất, Furniro có thể tham gia sâu vào quy trình nghiên cứu và phát triển sản phẩm, kiểm soát chất lượng, vận hành, chuỗi cung ứng và chăm sóc khách hàng. Đội ngũ thiết kế và kỹ sư của chúng tôi luôn hướng tới việc tạo ra những sản phẩm thiết kế đẹp hơn với chi phí thấp nhất cùng chất lượng bền bỉ theo thời gian.
                        Được chế tạo từ 90% gỗ cao su tái chế của Malaysia, Furniro cam kết mang lại đồ nội thất gia đình tiện lợi, giá cả phải chăng, độc đáo và bền vững. Cho dù bạn đang ở căn hộ đầu tiên hay tìm kiếm giải pháp tiết kiệm để trang trí không gian sống mơ ước, Furniro luôn là lựa chọn thiết thực với danh mục sản phẩm đa dạng và dễ dàng lắp ráp.
                     </p>
